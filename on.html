@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Online Event Management System</title>
+
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        scroll-behavior: smooth;
+    }
+
+    .hero {
+        background: url('future.jpg') center/cover no-repeat;
+        height: 90vh;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.6);
+    }
+
+    .hero-content {
+        position: relative;
+        text-align: center;
+        z-index: 2;
+    }
+
+    .event-card img {
+        height: 220px;
+        object-fit: cover;
+    }
+
+    .event-card {
+        transition: transform 0.3s ease;
+    }
+
+    .event-card:hover {
+        transform: scale(1.05);
+    }
+
+    footer {
+        background: #2c3e50;
+        color: white;
+    }
+
+    .social-icons i {
+        font-size: 1.4rem;
+        margin: 0 10px;
+        cursor: pointer;
+    }
+    /* SEARCH BAR ANIMATION */
+
+.search-box {
+    position: relative;
+    width: 300px;
+    margin: auto;
+    transition: all 0.4s ease;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px 45px;
+    border-radius: 30px;
+    border: 2px solid #ccc;
+    outline: none;
+    font-size: 16px;
+    transition: all 0.4s ease;
+}
+
+/* Search Icon */
+.search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: gray;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+/* Focus Animation */
+.search-box input:focus {
+    border-color: #ffc107;
+    box-shadow: 0 0 12px rgba(255,193,7,0.7);
+    width: 380px;
+}
+
+/* Icon animation on focus */
+.search-box input:focus + .search-icon {
+    color: #ffc107;
+}
+
+/* Hover effect */
+.search-box:hover input {
+    transform: scale(1.05);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<div class="container">
+    <a class="navbar-brand fw-bold" href="#">Elgin Elite Events </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="#events">Events</a></li>
+            <li class="nav-item">
+                <button class="btn btn-warning ms-3" data-bs-toggle="modal" data-bs-target="#registerModal">
+                    Register
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1 class="display-4 fw-bold">Welcome to the Future of Event Planning</h1>
+        <p class="lead">Plan, Manage and Attend Events Seamlessly</p>
+        <button class="btn btn-warning btn-lg mt-3" data-bs-toggle="modal" data-bs-target="#registerModal">
+            Join Now
+        </button>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="py-5">
+<div class="container text-center">
+    <h2 class="mb-4">About Our System</h2>
+    <p class="lead">
+        Our platform bridges organizers and attendees through seamless digital experiences.
+        Manage corporate, social, and technical events effortlessly.
+    </p>
+</div>
+<!-- Search bar-->>
+<div class="search-container text-center mb-4">
+    <div class="search-box">
+        <i class="bi bi-search search-icon"></i>
+        <input type="text" id="eventSearch" placeholder="Search events...">
+    </div>
+</div>
+
+<!-- Events Section -->
+<section id="events" class="py-5 bg-light">
+<div class="container">
+    <h2 class="text-center mb-5">Upcoming Events</h2>
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="card event-card shadow">
+                <img src="tech.jpg" class="card-img-top">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Technical Summit</h5>
+                    <p class="card-text">AI & Web 3.0 Workshop in Chennai.</p>
+                    <p class="text-danger fw-bold">Event starts in: <span id="eventTimer"></span></p>
+                    <button class="btn btn-dark">View Details</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card event-card shadow">
+                <img src="music.jpg" class="card-img-top">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Music Festival</h5>
+                    <p class="card-text">Experience live performances & DJ nights.</p>
+                    <p class="text-danger fw-bold">Event starts in: <span id="musicTimer"></span></p>
+                    <button class="btn btn-dark">View Details</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card event-card shadow">
+                <img src="corporate.jpg" class="card-img-top">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Corporate Networking</h5>
+                    <p class="card-text">Executive retreats & business summits.</p>
+                    <p class="text-danger fw-bold">Event starts in: <span id="corporateTimer"></span></p>
+                    <button class="btn btn-dark">View Details</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</section>
+
+<!-- Registration Modal -->
+<div class="modal fade" id="registerModal">
+<div class="modal-dialog">
+<div class="modal-content">
+    <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title">Event Registration</h5>
+        <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="mb-3">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-control" placeholder="Enter your name">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" placeholder="email@example.com">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Select Event</label>
+                <select class="form-select">
+                    <option>Technical Summit</option>
+                    <option>Music Festival</option>
+                    <option>Corporate Networking</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-warning w-100">Register Now</button>
+        </form>
+    </div>
+</div>
+</div>
+</div>
+
+<!-- Footer -->
+<footer class="py-4 text-center">
+<div class="container">
+    <p>Contact: elgine@karunya.edu.in</p>
+    <div class="social-icons my-3">
+        <i class="bi bi-facebook"></i>
+        <i class="bi bi-instagram"></i>
+        <i class="bi bi-linkedin"></i>
+    </div>
+   
+</div>
+
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="main.js"></script>
+<script src="extra.js"></script>
+
+</body>
+</html>
