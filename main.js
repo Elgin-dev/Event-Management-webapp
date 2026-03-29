@@ -1,4 +1,3 @@
-
 // ===============================
 // 1. DOM ELEMENT SELECTION
 // ===============================
@@ -7,8 +6,6 @@ const form = document.querySelector("#registerModal form");
 const nameInput = form.querySelector("input[type='text']");
 const emailInput = form.querySelector("input[type='email']");
 const eventSelect = form.querySelector("select");
-const eventCards = document.querySelectorAll(".event-card");
-const registerButtons = document.querySelectorAll(".event-card .btn");
 
 
 // ===============================
@@ -29,7 +26,7 @@ form.addEventListener("submit", function(e) {
     const email = emailInput.value.trim();
     const selectedEvent = eventSelect.value;
 
-    // Simple Validation
+    // Validation
     if (name === "" || email === "") {
         alert("Please fill all fields!");
         return;
@@ -74,33 +71,7 @@ function validateEmail(email) {
 
 
 // ===============================
-// 5. VIEW DETAILS BUTTON CLICK
-// ===============================
-
-registerButtons.forEach(button => {
-    button.addEventListener("click", function() {
-        const eventTitle = this.closest(".card").querySelector(".card-title").innerText;
-        const eventDesc = this.closest(".card").querySelector(".card-text").innerText;
-
-        alert("Event: " + eventTitle + "\n\nDetails: " + eventDesc);
-    });
-});
-
-
-// ===============================
-// 6. CLICK CARD AUTO SELECT EVENT
-// ===============================
-
-eventCards.forEach(card => {
-    card.addEventListener("click", function() {
-        const title = this.querySelector(".card-title").innerText;
-        eventSelect.value = title;
-    });
-});
-
-
-// ===============================
-// 7. DISPLAY REGISTRATION COUNT
+// 5. DISPLAY REGISTRATION COUNT
 // ===============================
 
 function updateRegistrationCount() {
@@ -121,7 +92,7 @@ updateRegistrationCount();
 
 
 // ===============================
-// 8. ACTIVE NAV LINK ON SCROLL
+// 6. ACTIVE NAV LINK ON SCROLL
 // ===============================
 
 const sections = document.querySelectorAll("section");
@@ -147,10 +118,77 @@ window.addEventListener("scroll", () => {
 
 
 // ===============================
-// 9. CONSOLE VIEW REGISTRATIONS
+// 7. CONSOLE VIEW REGISTRATIONS
 // ===============================
 
 window.viewRegistrations = function() {
     console.table(registrations);
 };
 
+
+// 8. SHOW REGISTRATIONS
+function showRegistrations() {
+    let data = JSON.parse(localStorage.getItem("eventRegistrations")) || [];
+
+    let output = document.getElementById("output");
+
+    if (data.length === 0) {
+        output.innerHTML = "<p class='text-muted'>No registrations yet.</p>";
+        return;
+    }
+
+    let html = "<div class='row'>";
+
+    data.slice(-6).reverse().forEach((item) => {
+        html += `
+            <div class="col-md-4">
+                <div class="card shadow mb-4 p-3 h-100 border-0">
+                    
+                    <h5 class="text-primary fw-bold">${item.name}</h5>
+
+                    <p class="mb-1">
+                        📌 <strong>${item.selectedEvent}</strong>
+                    </p>
+
+                    <p class="text-muted small">
+                        🕒 ${item.date}
+                    </p>
+
+                    <p class="text-secondary">
+                        Don't miss this event! Register now and join others.
+                    </p>
+
+                    <button 
+                        class="btn btn-warning btn-sm register-btn"
+                        data-event="${item.selectedEvent}">
+                        Register Now
+                    </button>
+
+                </div>
+            </div>
+        `;
+    });
+
+    html += "</div>";
+    output.innerHTML = html;
+
+    attachRegisterButtons();
+}
+
+function attachRegisterButtons() {
+    document.querySelectorAll(".register-btn").forEach(btn => {
+
+        btn.addEventListener("click", function () {
+
+            let eventName = this.getAttribute("data-event");
+
+            // Set dropdown value correctly
+            document.querySelector("select").value = eventName;
+
+            // Open modal
+            const modal = new bootstrap.Modal(document.getElementById('registerModal'));
+            modal.show();
+        });
+
+    });
+}
